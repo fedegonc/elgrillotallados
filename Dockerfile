@@ -1,32 +1,26 @@
-# Use official Eclipse Temurin image for Java 17
+# Stage 1 - Build
 FROM eclipse-temurin:17-jdk-alpine as builder
-
 WORKDIR /app
 
-# Copy Maven wrapper and pom.xml
-COPY mvnw pom.xml .
+COPY mvnw pom.xml ./
 COPY .mvn .mvn
 
-# Download dependencies (will be cached if pom.xml hasn't changed)
+# Make mvnw executable
+RUN chmod +x ./mvnw
+
 RUN ./mvnw dependency:go-offline
 
-# Copy source code
 COPY src src
+RUN ./mvnw clean package -DskipTests
 
-# Package the application
-RUN ./mvnw package -DskipTests
-
-# ---
-# Production image
+# Stage 2 - Run
 FROM eclipse-temurin:17-jdk-alpine
 
 WORKDIR /app
+RUN addgroup -S spring && adduser -S spring -G spring
+USER spring
 
-# Copy the packaged jar from the builder stage
 COPY --from=builder /app/target/*.jar app.jar
 
-# Expose port 8080 (default for Spring Boot)
 EXPOSE 8080
-
-# Run the application
 ENTRYPOINT ["java","-jar","app.jar"]
