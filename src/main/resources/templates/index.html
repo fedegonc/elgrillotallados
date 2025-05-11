@@ -1,70 +1,62 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/base}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${title}">El Grillo Tallados</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            background-color: #f8f9fa;
-            color: #333;
-        }
-        header {
-            background-color: #3a5a40;
-            color: white;
-            text-align: center;
-            padding: 2rem 1rem;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-        h1 {
-            margin-bottom: 0.5rem;
-        }
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.8;
-        }
-        .content {
-            background-color: white;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            padding: 2rem;
-            margin-top: 2rem;
-        }
-        footer {
-            text-align: center;
-            padding: 1rem;
-            background-color: #3a5a40;
-            color: white;
-            margin-top: 2rem;
-        }
-    </style>
+    <title th:text="${title}">Inicio</title>
 </head>
 <body>
-    <header>
-        <h1 th:text="${title}">El Grillo Tallados</h1>
-        <p class="subtitle" th:text="${message}">Bienvenido a nuestra tienda de tallados artesanales</p>
-    </header>
-    
-    <div class="container">
-        <div class="content">
-            <h2>Nuestros Productos</h2>
-            <p>Somos especialistas en tallados artesanales de la más alta calidad. Cada pieza es única y elaborada con dedicación y pasión.</p>
+    <div layout:fragment="content">
+        <!-- Propuesta de valor -->
+        <div style="border: 2px solid #ddd; padding: 20px; margin-bottom: 30px; border-radius: 5px; text-align: center;">
+            <h1 th:text="${title}" style="color: #333;">El Grillo Tallados</h1>
+            <p th:text="${message}" style="font-size: 1.2rem; color: #555;">Bienvenido a nuestra tienda de tallados artesanales</p>
+            <div style="margin-top: 20px;">
+                <a href="/productos" style="display: inline-block; padding: 10px 20px; background-color: #f8f8f8; color: #333; text-decoration: none; border: 1px solid #ddd; border-radius: 4px; margin-right: 10px;">Ver Productos</a>
+                <a href="/contacto" style="display: inline-block; padding: 10px 20px; background-color: #f8f8f8; color: #333; text-decoration: none; border: 1px solid #ddd; border-radius: 4px;">Contactar</a>
+            </div>
+        </div>
+        
+        <!-- Bloques de contenido -->
+        <div style="display: flex; gap: 20px; margin-bottom: 30px;">
+            <!-- Bloque de Productos -->
+            <div style="flex: 1; border: 2px solid #ddd; padding: 20px; border-radius: 5px;">
+                <h2 style="border-bottom: 1px solid #eee; padding-bottom: 10px;">Nuestros Productos</h2>
+                <p>Somos especialistas en tallados artesanales de la más alta calidad. Cada pieza es única y elaborada con dedicación y pasión.</p>
+                <ul style="padding-left: 20px;">
+                    <li>Tallados en madera</li>
+                    <li>Esculturas personalizadas</li>
+                    <li>Artículos decorativos</li>
+                </ul>
+            </div>
             
-            <h2>Servicios</h2>
-            <p>Ofrecemos servicios de tallado personalizado según tus necesidades. Contáctanos para más información.</p>
+            <!-- Bloque de Servicios -->
+            <div style="flex: 1; border: 2px solid #ddd; padding: 20px; border-radius: 5px;">
+                <h2 style="border-bottom: 1px solid #eee; padding-bottom: 10px;">Servicios</h2>
+                <p>Ofrecemos servicios de tallado personalizado según tus necesidades. Contáctanos para más información.</p>
+                <ul style="padding-left: 20px;">
+                    <li>Diseño personalizado</li>
+                    <li>Restauración de piezas</li>
+                    <li>Asesoramiento artístico</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Destaque -->
+        <div style="border: 2px solid #ddd; padding: 20px; margin-bottom: 30px; border-radius: 5px; background-color: #f9f9f9;">
+            <h2 style="text-align: center; margin-bottom: 20px;">Destacado del Mes</h2>
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <div style="flex: 1; border: 1px solid #eee; padding: 10px; text-align: center;">
+                    <div style="height: 150px; background-color: #eee; display: flex; align-items: center; justify-content: center;">
+                        <span>Imagen del Producto</span>
+                    </div>
+                </div>
+                <div style="flex: 2;">
+                    <h3>Escultura "Naturaleza Viva"</h3>
+                    <p>Una pieza única tallada en madera de cedro que representa la belleza de la naturaleza uruguaya. Perfecta para decorar espacios que buscan transmitir calidez y conexión con lo natural.</p>
+                    <p style="font-weight: bold;">Precio: $1,200</p>
+                    <a href="/productos/naturaleza-viva" style="display: inline-block; padding: 8px 15px; background-color: #f8f8f8; color: #333; text-decoration: none; border: 1px solid #ddd; border-radius: 4px;">Ver Detalles</a>
+                </div>
+            </div>
         </div>
     </div>
-    
-    <footer>
-        <p>&copy; 2025 El Grillo Tallados. Todos los derechos reservados.</p>
-    </footer>
 </body>
 </html>

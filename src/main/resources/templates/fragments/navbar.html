@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <nav th:fragment="navbar" style="background-color: #f8f8f8; border: 1px solid #ddd; padding: 10px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="font-weight: bold; font-size: 1.5rem;">
+            <a href="/" style="text-decoration: none; color: #333;">El Grillo Tallados</a>
+        </div>
+        <div>
+            <ul style="list-style: none; display: flex; gap: 20px; margin: 0; padding: 0;">
+                <li><a href="/" style="text-decoration: none; color: #333; padding: 5px;">Inicio</a></li>
+                <li><a href="/productos" style="text-decoration: none; color: #333; padding: 5px;">Productos</a></li>
+                <li><a href="/servicios" style="text-decoration: none; color: #333; padding: 5px;">Servicios</a></li>
+                <li><a href="/contacto" style="text-decoration: none; color: #333; padding: 5px;">Contacto</a></li>
+            </ul>
+        </div>
+    </nav>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">El Grillo Tallados</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif;">
+    <!-- Navbar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+    
+    <!-- Contenido principal -->
+    <main style="padding: 20px; min-height: 70vh;">
+        <div layout:fragment="content"></div>
+    </main>
+    
+    <!-- Footer -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>
