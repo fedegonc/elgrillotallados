@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">El Grillo Tallados</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        header {
+            background-color: #3a5a40;
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        h1 {
+            margin-bottom: 0.5rem;
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+        .content {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: #3a5a40;
+            color: white;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 th:text="${title}">El Grillo Tallados</h1>
+        <p class="subtitle" th:text="${message}">Bienvenido a nuestra tienda de tallados artesanales</p>
+    </header>
+    
+    <div class="container">
+        <div class="content">
+            <h2>Nuestros Productos</h2>
+            <p>Somos especialistas en tallados artesanales de la más alta calidad. Cada pieza es única y elaborada con dedicación y pasión.</p>
+            
+            <h2>Servicios</h2>
+            <p>Ofrecemos servicios de tallado personalizado según tus necesidades. Contáctanos para más información.</p>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 El Grillo Tallados. Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>
