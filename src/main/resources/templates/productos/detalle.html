@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/base}">
+<head>
+    <title th:text="${title}">Detalle de Producto</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="mb-4">
+            <a href="/productos" class="text-[var(--primary)] hover:underline flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Volver al catálogo
+            </a>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Imagen del producto -->
+                <div class="p-4">
+                    <img th:src="${producto.imagenUrl != null ? producto.imagenUrl : '/images/default.jpg'}" 
+                         th:alt="${producto.nombre}" 
+                         class="w-full h-auto rounded-lg">
+                </div>
+                
+                <!-- Información del producto -->
+                <div class="p-6">
+                    <h1 class="text-3xl font-bold mb-2" th:text="${producto.nombre}">Nombre del Producto</h1>
+                    
+                    <div class="mb-4">
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2" th:text="${producto.categoria}">Categoría</span>
+                    </div>
+                    
+                    <p class="text-gray-700 mb-6" th:text="${producto.descripcion}">Descripción detallada del producto...</p>
+                    
+                    <div class="mb-6">
+                        <span class="text-3xl font-bold text-[var(--primary)]" th:text="'$' + ${#numbers.formatDecimal(producto.precio, 0, 'COMMA', 2, 'POINT')}">$99.99</span>
+                    </div>
+                    
+                    <form th:action="@{/pedidos/carrito/agregar}" method="post" class="flex items-end space-x-4">
+                        <input type="hidden" name="productoId" th:value="${producto.id}">
+                        
+                        <div>
+                            <label for="cantidad" class="block text-sm font-medium text-gray-700 mb-1">Cantidad</label>
+                            <input type="number" id="cantidad" name="cantidad" value="1" min="1" max="10" 
+                                   class="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-[var(--primary)] focus:border-[var(--primary)]">
+                        </div>
+                        
+                        <button type="submit" class="px-6 py-2 bg-[var(--primary)] text-white rounded-md hover:bg-opacity-90 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                            Agregar al carrito
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Productos relacionados -->
+        <div class="mt-12">
+            <h2 class="text-2xl font-bold mb-6">También podría interesarte</h2>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Aquí se insertarían productos relacionados usando el fragmento card-prod -->
+                <!-- <div th:replace="~{productos/lista :: card-prod}" th:each="productoRelacionado : ${productosRelacionados}"></div> -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>

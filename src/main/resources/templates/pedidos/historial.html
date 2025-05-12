@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/base}">
+<head>
+    <title th:text="${title}">Mis Pedidos</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <h1 class="text-3xl font-bold mb-6" th:text="${title}">Mis Pedidos</h1>
+        
+        <!-- Lista de pedidos -->
+        <div th:if="${!pedidos.empty}" class="space-y-6">
+            <!-- Cada pedido -->
+            <div th:each="pedido : ${pedidos}" th:fragment="row-historial" class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="bg-gray-50 p-4 border-b">
+                    <div class="flex flex-col md:flex-row md:justify-between md:items-center">
+                        <div>
+                            <h2 class="text-lg font-bold">
+                                Pedido <span th:text="${pedido.numeroReferencia}">EGT-12345678</span>
+                            </h2>
+                            <p class="text-sm text-gray-600">
+                                <span th:text="${#temporals.format(pedido.fechaCreacion, 'dd/MM/yyyy HH:mm')}">01/01/2025 12:00</span>
+                            </p>
+                        </div>
+                        <div class="mt-2 md:mt-0 flex items-center">
+                            <span class="px-3 py-1 rounded-full text-sm font-semibold mr-4"
+                                  th:classappend="${
+                                      pedido.estado.name() == 'PENDIENTE' ? 'bg-blue-100 text-blue-800' : 
+                                      pedido.estado.name() == 'PROCESANDO' ? 'bg-yellow-100 text-yellow-800' :
+                                      pedido.estado.name() == 'ENVIADO' ? 'bg-purple-100 text-purple-800' :
+                                      pedido.estado.name() == 'ENTREGADO' ? 'bg-green-100 text-green-800' :
+                                      pedido.estado.name() == 'CANCELADO' ? 'bg-red-100 text-red-800' : 
+                                      'bg-gray-100 text-gray-800'
+                                  }"
+                                  th:text="${pedido.estado}">PENDIENTE</span>
+                            <span class="font-bold" th:text="'$' + ${#numbers.formatDecimal(pedido.total, 0, 'COMMA', 2, 'POINT')}">$299.97</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="p-4">
+                    <!-- Resumen de productos -->
+                    <div class="mb-4">
+                        <h3 class="font-semibold mb-2">Productos</h3>
+                        <ul class="space-y-1">
+                            <li th:each="item : ${pedido.items}" class="flex justify-between">
+                                <span>
+                                    <span th:text="${item.cantidad} + ' x ' + ${item.productoNombre}">2 x Nombre del producto</span>
+                                </span>
+                                <span th:text="'$' + ${#numbers.formatDecimal(item.subtotal, 0, 'COMMA', 2, 'POINT')}">$199.98</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Dirección de envío resumida -->
+                    <div class="mb-4">
+                        <h3 class="font-semibold mb-2">Envío</h3>
+                        <p th:text="${pedido.nombreEnvio}">Nombre del cliente</p>
+                        <p th:text="${pedido.direccionEnvio + ', ' + pedido.ciudadEnvio}">Dirección, Ciudad</p>
+                    </div>
+                    
+                    <!-- Botones de acción -->
+                    <div class="flex justify-end">
+                        <a th:href="@{/pedidos/confirmacion/{id}(id=${pedido.id})}" 
+                           class="px-4 py-2 bg-[var(--primary)] text-white rounded hover:bg-opacity-90">
+                            Ver detalles
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sin pedidos -->
+        <div th:if="${pedidos.empty}" class="text-center py-12 bg-white rounded-lg shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <h2 class="text-xl font-bold mb-2">No tienes pedidos aún</h2>
+            <p class="text-gray-600 mb-6">Realiza tu primera compra para ver tu historial de pedidos</p>
+            <a href="/productos" class="px-6 py-2 bg-[var(--primary)] text-white rounded hover:bg-opacity-90">
+                Ver catálogo
+            </a>
+        </div>
+    </div>
+</body>
+</html>

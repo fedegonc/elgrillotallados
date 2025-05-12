@@ -4,17 +4,50 @@
     <meta charset="UTF-8">
 </head>
 <body>
-    <nav th:fragment="navbar" style="background-color: #f8f8f8; border: 1px solid #ddd; padding: 10px; display: flex; justify-content: space-between; align-items: center;">
-        <div style="font-weight: bold; font-size: 1.5rem;">
-            <a href="/" style="text-decoration: none; color: #333;">El Grillo Tallados</a>
-        </div>
-        <div>
-            <ul style="list-style: none; display: flex; gap: 20px; margin: 0; padding: 0;">
-                <li><a href="/" style="text-decoration: none; color: #333; padding: 5px;">Inicio</a></li>
-                <li><a href="/productos" style="text-decoration: none; color: #333; padding: 5px;">Productos</a></li>
-                <li><a href="/servicios" style="text-decoration: none; color: #333; padding: 5px;">Servicios</a></li>
-                <li><a href="/contacto" style="text-decoration: none; color: #333; padding: 5px;">Contacto</a></li>
-            </ul>
+    <nav th:fragment="navbar" class="bg-white shadow-md">
+        <div class="spring-container py-3">
+            <div class="flex justify-between items-center">
+                <!-- Logo y nombre -->
+                <a href="/" class="flex items-center space-x-2">
+                    <span class="text-xl font-bold text-[var(--primary)]">Tallado Criollo</span>
+                </a>
+                
+                <!-- Menú de navegación simplificado -->
+                <div class="hidden md:flex space-x-6">
+                    <a href="/" class="hover:text-[var(--primary)]">Inicio</a>
+                    <a href="/productos" class="hover:text-[var(--primary)]">Catálogo</a>
+                    <a href="/productos/categoria/relieve" class="hover:text-[var(--primary)]">Tallados en Relieve</a>
+                    <a href="/productos/categoria/hundido" class="hover:text-[var(--primary)]">Tallados Hundido</a>
+                    <a href="/productos/categoria/pintada" class="hover:text-[var(--primary)]">Madera Pintada</a>
+                </div>
+                
+                <!-- Menú estático a la derecha -->
+                <div class="flex items-center space-x-4">
+                    <!-- Si no hay objeto authentication en el modelo, significa que no hay usuario autenticado -->
+                    <div th:if="${#request.userPrincipal == null}" class="flex space-x-2">
+                        <a href="/clientes/login" class="spring-button">Iniciar Sesión</a>
+                        <a href="/clientes/registro" class="border border-[var(--primary)] text-[var(--primary)] px-3 py-1 rounded font-bold hover:bg-[var(--primary)] hover:text-white transition-colors">Registrarse</a>
+                    </div>
+                    
+                    <!-- Si hay usuario autenticado -->
+                    <div th:if="${#request.userPrincipal != null}" class="flex items-center space-x-4">
+                        <!-- Botón del carrito con icono -->
+                        <a href="/pedidos/carrito" class="relative flex items-center hover:text-[var(--primary)]">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                            <span class="ml-1">Carrito</span>
+                        </a>
+                        <a href="/pedidos/historial" class="hover:text-[var(--primary)]">Mis Pedidos</a>
+                        <a href="/clientes/perfil" class="hover:text-[var(--primary)]">Mi Perfil</a>
+                        <form th:action="@{/clientes/logout}" method="post">
+                            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md font-medium">
+                                Cerrar Sesión
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </nav>
 </body>

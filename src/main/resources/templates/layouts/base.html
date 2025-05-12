@@ -1,20 +1,87 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">El Grillo Tallados</title>
+
+    <!-- Título dinámico: “Página | Tallado Criollo” -->
+    <title layout:title-pattern="$CONTENT_TITLE | Tallado Criollo">Tallado Criollo</title>
+
+    <!-- Google Fonts - Sorts Mill Goudy -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sorts+Mill+Goudy:ital@0;1&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Sorts Mill Goudy', 'serif'],
+                        'serif': ['Sorts Mill Goudy', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Estilos base -->
+    <style>
+        :root {
+            --bg-color:#f8f9fa;
+            --text-color:#1e293b;
+            --primary:#6db33f;
+            --accent:#d4a01f;
+        }
+        body{
+            font-family:'Sorts Mill Goudy', serif;
+            background:var(--bg-color);color:var(--text-color);line-height:1.6;
+        }
+        .spring-container{max-width:1280px;margin:0 auto;padding:0 1rem;}
+        .spring-button{background:var(--primary);color:#fff;padding:.5rem 1rem;border-radius:.25rem;font-weight:700;transition:.2s}
+        .spring-button:hover{background:#5da92d}
+    </style>
+
+    <!-- Por si un view quiere inyectar CSS extra -->
+    <th:block layout:fragment="styles"></th:block>
 </head>
-<body style="margin: 0; padding: 0; font-family: Arial, sans-serif;">
-    <!-- Navbar -->
-    <div th:replace="~{fragments/navbar :: navbar}"></div>
-    
-    <!-- Contenido principal -->
-    <main style="padding: 20px; min-height: 70vh;">
-        <div layout:fragment="content"></div>
+
+<body class="min-h-screen flex flex-col">
+
+    <!-- NAVBAR (ya no es fragmento) -->
+    <header class="bg-stone-800 text-stone-100">
+        <nav class="max-w-6xl mx-auto flex items-center justify-between p-4">
+            <a th:href="@{/}" class="text-xl font-bold tracking-wide hover:text-amber-400">
+                Tallado Criollo
+            </a>
+
+            <div class="flex gap-4">
+                <a th:href="@{/productos}" class="hover:text-amber-400">Catálogo</a>
+                <a th:href="@{/pedidos/carrito}" class="hover:text-amber-400">Carrito</a>
+
+                <!-- Mostrar según autenticación -->
+                <a th:if="${#authorization.expression('isAuthenticated()')}"
+                   th:href="@{/clientes/perfil}" class="hover:text-amber-400">Mi Perfil</a>
+                <a th:if="${#authorization.expression('!isAuthenticated()')}"
+                   th:href="@{/clientes/login}" class="hover:text-amber-400">Login</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="flex-grow">
+        <div layout:fragment="content" class="spring-container py-4"></div>
     </main>
-    
-    <!-- Footer -->
-    <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <!-- FOOTER simple -->
+    <footer class="bg-stone-800 text-stone-100 py-4">
+        <p class="text-center text-sm">© 2025 Tallado Criollo · Arte en madera</p>
+    </footer>
+
+    <!-- Hook para scripts específicos de cada vista -->
+    <th:block layout:fragment="scripts"></th:block>
 </body>
 </html>

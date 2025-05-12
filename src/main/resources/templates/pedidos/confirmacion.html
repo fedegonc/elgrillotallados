@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/base}">
+<head>
+    <title th:text="${title}">Pedido Confirmado</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="max-w-3xl mx-auto">
+            <!-- Mensaje de confirmación -->
+            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6" role="alert">
+                <h2 class="text-xl font-bold">¡Pedido confirmado!</h2>
+                <p>Tu pedido ha sido recibido y está siendo procesado.</p>
+            </div>
+            
+            <!-- Detalles del pedido -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden mb-6">
+                <div class="bg-gray-50 p-4 border-b">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-xl font-bold">Detalles del pedido</h2>
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold" th:text="${pedido.estado}">PENDIENTE</span>
+                    </div>
+                </div>
+                
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <h3 class="font-semibold mb-2">Información del pedido</h3>
+                            <p><span class="font-medium">Número de pedido:</span> <span th:text="${pedido.numeroReferencia}">EGT-12345678</span></p>
+                            <p><span class="font-medium">Fecha:</span> <span th:text="${#temporals.format(pedido.fechaCreacion, 'dd/MM/yyyy HH:mm')}">01/01/2025 12:00</span></p>
+                            <p><span class="font-medium">Estado:</span> <span th:text="${pedido.estado}">PENDIENTE</span></p>
+                            <p><span class="font-medium">Método de pago:</span> <span th:text="${pedido.metodoPago}">Efectivo contra entrega</span></p>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-semibold mb-2">Dirección de envío</h3>
+                            <p th:text="${pedido.nombreEnvio}">Nombre del cliente</p>
+                            <p th:text="${pedido.direccionEnvio}">Dirección de envío</p>
+                            <p>
+                                <span th:text="${pedido.ciudadEnvio}">Ciudad</span>,
+                                <span th:text="${pedido.departamentoEnvio}">Departamento</span>
+                                <span th:if="${pedido.codigoPostalEnvio}" th:text="${pedido.codigoPostalEnvio}">12345</span>
+                            </p>
+                            <p th:text="${pedido.telefonoEnvio}">Teléfono</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Productos del pedido -->
+                    <h3 class="font-semibold mb-3">Productos</h3>
+                    <div class="border rounded-lg overflow-hidden mb-6">
+                        <!-- Cabecera de la tabla -->
+                        <div class="grid grid-cols-12 gap-4 p-3 border-b bg-gray-50 font-medium text-sm">
+                            <div class="col-span-6">Producto</div>
+                            <div class="col-span-2 text-center">Precio</div>
+                            <div class="col-span-2 text-center">Cantidad</div>
+                            <div class="col-span-2 text-center">Subtotal</div>
+                        </div>
+                        
+                        <!-- Filas de productos -->
+                        <div th:each="item : ${pedido.items}" class="grid grid-cols-12 gap-4 p-3 border-b items-center text-sm">
+                            <div class="col-span-6" th:text="${item.productoNombre}">Nombre del producto</div>
+                            <div class="col-span-2 text-center" th:text="'$' + ${#numbers.formatDecimal(item.precioUnitario, 0, 'COMMA', 2, 'POINT')}">$99.99</div>
+                            <div class="col-span-2 text-center" th:text="${item.cantidad}">2</div>
+                            <div class="col-span-2 text-center" th:text="'$' + ${#numbers.formatDecimal(item.subtotal, 0, 'COMMA', 2, 'POINT')}">$199.98</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Resumen de costos -->
+                    <div class="flex flex-col items-end">
+                        <div class="w-full md:w-64">
+                            <div class="flex justify-between mb-1">
+                                <span>Subtotal:</span>
+                                <span th:text="'$' + ${#numbers.formatDecimal(pedido.subtotal, 0, 'COMMA', 2, 'POINT')}">$299.97</span>
+                            </div>
+                            <div class="flex justify-between mb-1">
+                                <span>Envío:</span>
+                                <span th:text="'$' + ${#numbers.formatDecimal(pedido.costoEnvio != null ? pedido.costoEnvio : 0, 0, 'COMMA', 2, 'POINT')}">$0.00</span>
+                            </div>
+                            <div class="flex justify-between mb-2">
+                                <span>Impuestos:</span>
+                                <span th:text="'$' + ${#numbers.formatDecimal(pedido.impuestos != null ? pedido.impuestos : 0, 0, 'COMMA', 2, 'POINT')}">$0.00</span>
+                            </div>
+                            <div class="flex justify-between font-bold text-lg border-t pt-1">
+                                <span>Total:</span>
+                                <span th:text="'$' + ${#numbers.formatDecimal(pedido.total, 0, 'COMMA', 2, 'POINT')}">$299.97</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Notas adicionales -->
+                    <div th:if="${pedido.notasAdicionales}" class="mt-6 p-4 bg-gray-50 rounded-lg">
+                        <h3 class="font-semibold mb-2">Notas adicionales</h3>
+                        <p th:text="${pedido.notasAdicionales}">Notas adicionales del cliente...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Botones de acción -->
+            <div class="flex justify-between">
+                <a href="/productos" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">
+                    Seguir comprando
+                </a>
+                <a href="/pedidos/historial" class="px-4 py-2 bg-[var(--primary)] text-white rounded hover:bg-opacity-90">
+                    Ver mis pedidos
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

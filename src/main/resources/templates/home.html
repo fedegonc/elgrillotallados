@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/base}">
+<head>
+    <title>Panel Principal</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="dashboard-container">
+            <!-- Mensaje de bienvenida -->
+            <div class="welcome-box">
+                <h1>Bienvenido a tu Panel Principal</h1>
+                <p th:if="${session.clienteNombre != null}" th:text="'¡Hola, ' + ${session.clienteNombre} + '! Aquí puedes gestionar tu cuenta y ver tus pedidos.">¡Hola, Usuario! Aquí puedes gestionar tu cuenta y ver tus pedidos.</p>
+            </div>
+            
+            <!-- Si no hay sesión, redirigir a login -->
+            <div th:if="${session.clienteId == null}" class="card">
+                <h2>Acceso restringido</h2>
+                <p>Debes iniciar sesión para acceder a esta página.</p>
+                <a href="/clientes/login" class="btn btn-primary">Iniciar Sesión</a>
+            </div>
+            
+            <!-- Dashboard para usuarios logueados -->
+            <div th:if="${session.clienteId != null}">
+                <div class="dashboard-grid">
+                    <!-- Usando el fragmento para las tarjetas -->
+                    <div th:replace="~{fragments/dashboard/card :: dashboard-card('👤', 'Mi Perfil', 'Gestiona tu información personal y dirección de envío.', '/clientes/perfil', 'Ver Perfil')}"></div>
+                    <div th:replace="~{fragments/dashboard/card :: dashboard-card('📦', 'Mis Pedidos', 'Revisa el historial y estado de tus pedidos.', '/pedidos/historial', 'Ver Pedidos')}"></div>
+                    <div th:replace="~{fragments/dashboard/card :: dashboard-card('🛒', 'Carrito de Compras', 'Continúa comprando o finaliza tu pedido actual.', '/pedidos/carrito', 'Ver Carrito')}"></div>
+                    <div th:replace="~{fragments/dashboard/card :: dashboard-card('🔍', 'Catálogo', 'Explora nuestro catálogo completo de tallados artesanales.', '/productos', 'Ver Catálogo')}"></div>
+                </div>
+                
+                <!-- Productos destacados -->
+                <div class="producto-lista">
+                    <h2>Productos que podrían interesarte</h2>
+                    <div th:with="destacados=${@productoService.obtenerDestacados()}">
+                        <div th:replace="~{fragments/producto/lista :: producto-lista(${destacados}, 'Destacados para ti')}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

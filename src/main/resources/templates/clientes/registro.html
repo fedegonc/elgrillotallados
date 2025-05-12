@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/base}">
+<head>
+    <title>Registro de Cuenta</title>
+</head>
+<body>
+    <div layout:fragment="content" class="py-8 px-4 mx-auto max-w-md lg:py-12">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-6 text-center">Crear una cuenta</h2>
+            
+            <!-- Mensajes de error (Error First) -->
+            <div th:if="${error}" class="p-4 mb-6 text-sm text-red-700 bg-red-100 rounded-lg border border-red-400">
+                <div class="flex items-center mb-1">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="font-medium">Error:</span>
+                </div>
+                <p th:text="${error}">Mensaje de error</p>
+            </div>
+            
+            <!-- Mensajes de éxito -->
+            <div th:if="${mensaje}" class="p-4 mb-6 text-sm text-green-700 bg-green-100 rounded-lg border border-green-400">
+                <div class="flex items-center mb-1">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="font-medium">Éxito:</span>
+                </div>
+                <p th:text="${mensaje}">Mensaje de éxito</p>
+            </div>
+            
+            <!-- Formulario de registro -->
+            <form th:action="@{/clientes/registro}" th:object="${cliente}" method="post" class="space-y-4">
+                <div class="mb-4">
+                    <label for="nombre" class="block text-sm font-medium text-gray-700 mb-1">Nombre:</label>
+                    <input type="text" id="nombre" th:field="*{nombre}" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[var(--primary)]" required>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email:</label>
+                    <input type="email" id="email" th:field="*{email}" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[var(--primary)]" required>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Contraseña:</label>
+                    <input type="password" id="password" th:field="*{password}" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[var(--primary)]" required>
+                    <p class="mt-1 text-xs text-gray-500">Mínimo 6 caracteres, incluye números y letras.</p>
+                </div>
+                
+                <!-- Campos ocultos para mantener la compatibilidad con el modelo -->
+                <input type="hidden" th:field="*{apellido}" value="">
+                <input type="hidden" th:field="*{telefono}" value="">
+                <input type="hidden" th:field="*{direccion}" value="">
+                <input type="hidden" th:field="*{ciudad}" value="">
+                <input type="hidden" th:field="*{departamento}" value="">
+                <input type="hidden" th:field="*{codigoPostal}" value="">
+                
+                <div class="mb-4">
+                    <button type="submit" class="w-full bg-[var(--primary)] text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition-colors font-medium">Registrarse</button>
+                </div>
+            </form>
+            
+            <div class="mt-6 text-center text-sm">
+                <p class="mb-2">¿Ya tienes cuenta? <a th:href="@{/clientes/login}" class="text-[var(--primary)] hover:underline font-medium">Inicia sesión aquí</a></p>
+                <p><a th:href="@{/}" class="text-gray-600 hover:underline">Volver a la página principal</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

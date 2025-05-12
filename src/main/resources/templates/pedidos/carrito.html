@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/base}">
+<head>
+    <title th:text="${title}">Carrito de Compras</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <h1 class="text-3xl font-bold mb-6" th:text="${title}">Carrito de Compras</h1>
+        
+        <!-- Mensaje de error (Error First) -->
+        <div th:if="${error}" class="p-4 mb-6 text-sm text-red-700 bg-red-100 rounded-lg border border-red-400" role="alert">
+            <div class="flex items-center mb-1">
+                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="font-medium">Error:</span>
+            </div>
+            <p th:text="${error}">Mensaje de error</p>
+        </div>
+        
+        <!-- Mensaje de éxito si existe -->
+        <div th:if="${mensaje}" class="p-4 mb-6 text-sm text-green-700 bg-green-100 rounded-lg border border-green-400" role="alert">
+            <div class="flex items-center mb-1">
+                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="font-medium">Éxito:</span>
+            </div>
+            <p th:text="${mensaje}">Mensaje de éxito</p>
+        </div>
+        
+        <!-- Carrito con items -->
+        <div th:if="${!carrito.items.empty}" class="bg-white rounded-lg shadow-md overflow-hidden">
+            <!-- Cabecera de la tabla -->
+            <div class="grid grid-cols-12 gap-4 p-4 border-b bg-gray-50 font-bold">
+                <div class="col-span-5">Producto</div>
+                <div class="col-span-2 text-center">Precio</div>
+                <div class="col-span-2 text-center">Cantidad</div>
+                <div class="col-span-2 text-center">Subtotal</div>
+                <div class="col-span-1 text-center">Acciones</div>
+            </div>
+            
+            <!-- Filas de productos en el carrito -->
+            <div th:each="item : ${carrito.items}" th:fragment="row-carrito" class="grid grid-cols-12 gap-4 p-4 border-b items-center">
+                <!-- Producto -->
+                <div class="col-span-5 flex items-center">
+                    <img th:src="@{/images/default.jpg}" alt="Imagen del producto" class="w-16 h-16 object-cover rounded mr-4">
+                    <div>
+                        <h3 class="font-bold" th:text="${item.productoNombre}">Nombre del producto</h3>
+                    </div>
+                </div>
+                
+                <!-- Precio unitario -->
+                <div class="col-span-2 text-center" th:text="'$' + ${#numbers.formatDecimal(item.precioUnitario, 0, 'COMMA', 2, 'POINT')}">$99.99</div>
+                
+                <!-- Cantidad -->
+                <div class="col-span-2 text-center">
+                    <form th:action="@{/pedidos/carrito/actualizar}" method="post" class="flex items-center justify-center">
+                        <input type="hidden" name="itemId" th:value="${item.id}">
+                        <input type="number" name="cantidad" th:value="${item.cantidad}" min="1" max="10" 
+                               class="border border-gray-300 rounded w-16 text-center py-1">
+                        <button type="submit" class="ml-2 text-[var(--primary)] hover:text-opacity-80">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Subtotal -->
+                <div class="col-span-2 text-center font-bold" th:text="'$' + ${#numbers.formatDecimal(item.subtotal, 0, 'COMMA', 2, 'POINT')}">$199.98</div>
+                
+                <!-- Acciones -->
+                <div class="col-span-1 text-center">
+                    <form th:action="@{/pedidos/carrito/eliminar}" method="post">
+                        <input type="hidden" name="itemId" th:value="${item.id}">
+                        <button type="submit" class="text-red-500 hover:text-red-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Resumen del carrito -->
+            <div class="p-6 bg-gray-50">
+                <div class="flex justify-between mb-2">
+                    <span>Subtotal:</span>
+                    <span th:text="'$' + ${#numbers.formatDecimal(carrito.subtotal, 0, 'COMMA', 2, 'POINT')}">$299.97</span>
+                </div>
+                <div class="flex justify-between mb-2">
+                    <span>Envío:</span>
+                    <span th:text="'$' + ${#numbers.formatDecimal(carrito.costoEnvio != null ? carrito.costoEnvio : 0, 0, 'COMMA', 2, 'POINT')}">$0.00</span>
+                </div>
+                <div class="flex justify-between mb-4">
+                    <span>Impuestos:</span>
+                    <span th:text="'$' + ${#numbers.formatDecimal(carrito.impuestos != null ? carrito.impuestos : 0, 0, 'COMMA', 2, 'POINT')}">$0.00</span>
+                </div>
+                <div class="flex justify-between font-bold text-lg">
+                    <span>Total:</span>
+                    <span th:text="'$' + ${#numbers.formatDecimal(carrito.total, 0, 'COMMA', 2, 'POINT')}">$299.97</span>
+                </div>
+                
+                <div class="mt-6 flex justify-between">
+                    <form th:action="@{/pedidos/carrito/vaciar}" method="post">
+                        <button type="submit" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">
+                            Vaciar carrito
+                        </button>
+                    </form>
+                    <a th:href="@{/pedidos/checkout}" class="px-6 py-2 bg-[var(--primary)] text-white rounded hover:bg-opacity-90">
+                        Finalizar compra
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Carrito vacío -->
+        <div th:if="${carrito.items.empty}" class="text-center py-12 bg-white rounded-lg shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            <h2 class="text-xl font-bold mb-2">Tu carrito está vacío</h2>
+            <p class="text-gray-600 mb-6">Agrega algunos productos para comenzar a comprar</p>
+            <a href="/productos" class="px-6 py-2 bg-[var(--primary)] text-white rounded hover:bg-opacity-90">
+                Ver catálogo
+            </a>
+        </div>
+    </div>
+</body>
+</html>
