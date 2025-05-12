@@ -72,8 +72,8 @@ public class ClienteController {
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
             
-            // Redirigir a la página de bienvenida
-            return "redirect:/clientes/bienvenida";
+            // Redirigir directamente al catálogo de productos
+            return "redirect:/productos";
         }
     }
 

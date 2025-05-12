@@ -22,7 +22,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(auth -> auth
                 // Rutas públicas
-                .requestMatchers("/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
+                .requestMatchers("/css/**", "/js/**", "/img/**", "/favicon.ico").permitAll()
                 .requestMatchers("/", "/productos/**", "/error").permitAll()
                 .requestMatchers("/clientes/login", "/clientes/registro").permitAll()
                 // Rutas protegidas por rol
@@ -35,7 +35,7 @@ public class SecurityConfig {
             .formLogin(form -> form
                 .loginPage("/clientes/login")
                 .loginProcessingUrl("/clientes/login")
-                .defaultSuccessUrl("/clientes/bienvenida", true)
+                .defaultSuccessUrl("/productos", true)
                 .failureUrl("/clientes/login?error=true")
                 .permitAll()
             )

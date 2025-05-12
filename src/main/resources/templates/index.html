@@ -4,44 +4,157 @@
       layout:decorate="~{layouts/base}">
 <head>
     <title>Tallado Criollo – Arte en madera</title>
-    <!-- Si tu layout base NO carga Tailwind, quita el comentario ↓ -->
-    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <style>
+        .hero-section {
+            position: relative;
+            overflow: hidden;
+            min-height: 85vh;
+        }
+        
+        .bg-image-container {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 65%;
+            height: 100%;
+            clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+            z-index: -1;
+        }
+        
+        .bg-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.85;
+        }
+        
+        .content-container {
+            position: relative;
+            z-index: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+        }
+        
+        .text-box {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 2.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin-top: 5rem;
+            position: relative;
+        }
+        
+        .accent-border {
+            position: absolute;
+            width: 40%;
+            height: 8px;
+            background-color: var(--accent);
+            top: -4px;
+            left: 10%;
+            border-radius: 4px;
+        }
+        
+        .featured-image {
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            transform: rotate(-2deg);
+            margin-top: 3rem;
+            margin-left: 2rem;
+            max-width: 350px;
+        }
+        
+        @media (max-width: 768px) {
+            .bg-image-container {
+                width: 100%;
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+                opacity: 0.3;
+            }
+            
+            .text-box {
+                margin-top: 2rem;
+                max-width: 100%;
+            }
+            
+            .featured-image {
+                margin: 2rem auto;
+                transform: rotate(0);
+            }
+        }
+    </style>
 </head>
 
 <body>
-<div layout:fragment="content" class="space-y-12">
-
-    <!-- HERO 33 / 66 ------------------------------------------------------- -->
-    <section class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
-        <!-- 33 % foto -->
-        <figure class="lg:col-span-1">
-            <img th:src="@{/images/hero-tallado.jpg}"
-                 alt="Detalle de un tallado en madera"
-                 class="w-full h-auto rounded-2xl shadow object-cover">
-        </figure>
-
-        <!-- 66 % texto -->
-        <article class="lg:col-span-2 flex flex-col justify-center">
-            <h1 class="text-3xl sm:text-4xl font-bold mb-4">
-                Arte que nace del campo<br class="hidden sm:block">y dura toda la vida
-            </h1>
-
-            <p class="mb-4 text-lg leading-relaxed">
-                Con manos criollas y madera de la región tallamos nombres,
-                logos y recuerdos a tu medida. Sin tecnicismos: contanos la idea,
-                nosotros la pasamos al tronco y te la llevamos a tu puerta.
-            </p>
-
-            <a href="/productos"
-               class="self-start bg-amber-500 hover:bg-amber-600 text-stone-900 font-bold px-5 py-3 rounded-lg shadow">
-               Ver catálogo
-            </a>
-        </article>
+<div layout:fragment="content">
+    <!-- Hero Section con imagen asimétrica -->
+    <section class="hero-section">
+        <!-- Imagen de fondo asimétrica -->
+        <div class="bg-image-container">
+            <img src="/img/imagen_inspiracion.jpg" alt="Inspiración en madera" class="bg-image">
+        </div>
+        
+        <div class="content-container">
+            <div class="text-box">
+                <div class="accent-border"></div>
+                <h1 class="text-3xl sm:text-4xl font-bold mb-6">
+                    Arte que nace del campo<br class="hidden sm:block">y dura toda la vida
+                </h1>
+                
+                <p class="mb-6 text-lg leading-relaxed">
+                    Con manos criollas y madera de la región tallamos nombres,
+                    logos y recuerdos a tu medida. Sin tecnicismos: contanos la idea,
+                    nosotros la pasamos al tronco y te la llevamos a tu puerta.
+                </p>
+                
+                <a href="/productos"
+                   class="inline-block bg-amber-500 hover:bg-amber-600 text-stone-900 font-bold px-5 py-3 rounded-lg shadow transition-all duration-300 hover:translate-y-[-2px] flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                    </svg>
+                    Ver catálogo
+                </a>
+            </div>
+            
+            <!-- Imagen destacada con rotación -->
+            <img src="/img/imagen_inspiracion.jpg" 
+                 alt="Detalle de un tallado en madera" 
+                 class="featured-image hidden md:block">
+        </div>
     </section>
-
-    <!-- La sección de productos destacados y categorías ha sido eliminada -->
-
-    <!-- La sección de contacto ha sido eliminada -->
+    
+    <!-- Sección Esculpimos Legado -->
+    <section class="py-16 px-4 bg-stone-100">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <!-- Columna de texto -->
+                <div class="md:w-1/2 order-2 md:order-1">
+                    <h2 class="text-3xl font-bold mb-6 relative">
+                        <span class="relative z-10">Esculpimos Legado</span>
+                        <span class="absolute -bottom-2 left-0 w-24 h-2 bg-amber-400 z-0"></span>
+                    </h2>
+                    <p class="text-lg leading-relaxed mb-8">
+                        No solo tallamos madera: atrapamos emociones y las fijamos en cada veta. Cada homenaje se convierte en historia lista para cruzar siglos. Diseñamos piezas que desafían el tiempo, destinadas a pasar de tus manos a las de tus nietos como un legado irrepetible.
+                    </p>
+                    <a href="/productos/categoria/especiales" class="inline-block border-2 border-amber-500 text-amber-700 hover:bg-amber-500 hover:text-white font-medium px-5 py-2 rounded-lg transition-all duration-300 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                        </svg>
+                        Ver piezas especiales
+                    </a>
+                </div>
+                
+                <!-- Columna de imagen -->
+                <div class="md:w-1/2 order-1 md:order-2">
+                    <img src="/img/imagen_inspiracion.jpg" alt="Tallado artesanal" class="w-full h-auto rounded-lg shadow-lg transform md:rotate-2 hover:rotate-0 transition-transform duration-500">
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
 </body>
 </html>

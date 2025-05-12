@@ -1,141 +1,90 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/base}">
 <head>
-    <title>Mi Perfil</title>
-    <style>
-        .profile-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        .profile-header {
-            background-color: #4a7c59;
-            color: white;
-            padding: 20px;
-            border-radius: 8px 8px 0 0;
-            margin-bottom: 20px;
-        }
-        .profile-info {
-            display: flex;
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-        .profile-sidebar {
-            flex: 1;
-        }
-        .profile-content {
-            flex: 2;
-        }
-        .profile-box {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            background-color: #f9f9f9;
-        }
-        .profile-box h3 {
-            margin-top: 0;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-        }
-        .profile-item {
-            margin-bottom: 10px;
-        }
-        .profile-label {
-            font-weight: bold;
-            display: inline-block;
-            width: 150px;
-        }
-        .profile-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        .btn {
-            display: inline-block;
-            padding: 8px 15px;
-            border-radius: 4px;
-            text-decoration: none;
-            color: white;
-        }
-        .btn-primary {
-            background-color: #4a7c59;
-        }
-        .btn-secondary {
-            background-color: #6c757d;
-        }
-        .btn-danger {
-            background-color: #dc3545;
-        }
-    </style>
+    <title th:text="${title} ?: 'Mi Perfil'">Mi Perfil</title>
 </head>
 <body>
     <div layout:fragment="content">
-        <div class="profile-container">
-            <div class="profile-header">
-                <h2>Mi Perfil</h2>
-                <p th:if="${cliente != null}" th:text="'Bienvenido, ' + ${cliente.nombre} + ' ' + ${cliente.apellido}"></p>
+        <div class="max-w-4xl mx-auto px-4 py-6">
+            <div class="bg-[var(--primary)] text-white p-6 rounded-t-lg mb-6">
+                <h1 class="text-3xl font-bold mb-2">Mi Perfil</h1>
+                <p th:if="${cliente != null}" th:text="'Bienvenido, ' + ${cliente.nombre} + ' ' + ${cliente.apellido}" class="text-lg"></p>
             </div>
             
-            <div th:if="${cliente == null}" class="profile-box">
-                <p>Debes iniciar sesión para ver tu perfil. <a th:href="@{/clientes/login}">Iniciar sesión</a></p>
+            <div th:if="${cliente == null}" class="bg-white p-6 rounded-lg shadow-md">
+                <p>Debes iniciar sesión para ver tu perfil. <a th:href="@{/clientes/login}" class="text-[var(--primary)] hover:underline">Iniciar sesión</a></p>
             </div>
             
-            <div th:if="${cliente != null}" class="profile-info">
-                <div class="profile-sidebar">
-                    <div class="profile-box">
-                        <h3>Acciones Rápidas</h3>
-                        <div class="profile-actions" style="flex-direction: column;">
-                            <a th:href="@{/pedidos/historial}" class="btn btn-primary">Mis Pedidos</a>
-                            <a th:href="@{/pedidos/carrito}" class="btn btn-primary">Mi Carrito</a>
-                            <a th:href="@{/clientes/logout}" class="btn btn-secondary">Cerrar Sesión</a>
+            <div th:if="${cliente != null}" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <!-- Sidebar con acciones rápidas -->
+                <div class="md:col-span-1">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-xl font-bold mb-4 pb-2 border-b">Acciones Rápidas</h2>
+                        <div class="flex flex-col space-y-3">
+                            <a th:href="@{/pedidos/historial}" class="bg-[var(--primary)] text-white py-2 px-4 rounded-md text-center hover:bg-opacity-90 transition">
+                                Mis Pedidos
+                            </a>
+                            <a th:href="@{/pedidos/carrito}" class="bg-[var(--primary)] text-white py-2 px-4 rounded-md text-center hover:bg-opacity-90 transition">
+                                Mi Carrito
+                            </a>
+                            <form th:action="@{/clientes/logout}" method="post" class="w-full">
+                                <button type="submit" class="w-full bg-gray-600 text-white py-2 px-4 rounded-md text-center hover:bg-gray-700 transition">
+                                    Cerrar Sesión
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
                 
-                <div class="profile-content">
-                    <div class="profile-box">
-                        <h3>Información Personal</h3>
-                        <div class="profile-item">
-                            <span class="profile-label">Nombre:</span>
-                            <span th:text="${cliente.nombre + ' ' + cliente.apellido}">Nombre Completo</span>
+                <!-- Contenido principal -->
+                <div class="md:col-span-2">
+                    <!-- Información personal -->
+                    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+                        <h2 class="text-xl font-bold mb-4 pb-2 border-b">Información Personal</h2>
+                        
+                        <div class="space-y-3">
+                            <div class="flex">
+                                <span class="font-medium w-32">Nombre:</span>
+                                <span th:text="${cliente.nombre + ' ' + cliente.apellido}">Nombre Completo</span>
+                            </div>
+                            <div class="flex">
+                                <span class="font-medium w-32">Email:</span>
+                                <span th:text="${cliente.email}">email@example.com</span>
+                            </div>
+                            <div class="flex">
+                                <span class="font-medium w-32">Teléfono:</span>
+                                <span th:text="${cliente.telefono ?: 'No especificado'}">123456789</span>
+                            </div>
+                            <div class="flex">
+                                <span class="font-medium w-32">Dirección:</span>
+                                <span th:text="${cliente.direccion ?: 'No especificada'}">Calle Ejemplo, 123</span>
+                            </div>
+                            <div class="flex">
+                                <span class="font-medium w-32">Registro:</span>
+                                <span th:text="${#temporals.format(cliente.fechaRegistro, 'dd/MM/yyyy')}">01/01/2022</span>
+                            </div>
                         </div>
-                        <div class="profile-item">
-                            <span class="profile-label">Email:</span>
-                            <span th:text="${cliente.email}">email@ejemplo.com</span>
-                        </div>
-                        <div class="profile-item">
-                            <span class="profile-label">Teléfono:</span>
-                            <span th:text="${cliente.telefono != null ? cliente.telefono : 'No especificado'}">No especificado</span>
-                        </div>
-                        <div class="profile-item">
-                            <span class="profile-label">Fecha de registro:</span>
-                            <span th:text="${#temporals.format(cliente.fechaRegistro, 'dd/MM/yyyy')}">01/01/2025</span>
+                        
+                        <div class="flex space-x-3 mt-5">
+                            <a href="#" class="bg-[var(--primary)] text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition">Editar Perfil</a>
+                            <a th:href="@{/clientes/cambiarPassword}" class="bg-gray-600 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition">Cambiar Contraseña</a>
                         </div>
                     </div>
                     
-                    <div class="profile-box">
-                        <h3>Dirección de Envío</h3>
-                        <div th:if="${cliente.direccion != null && !cliente.direccion.isEmpty()}">
-                            <div class="profile-item">
-                                <span class="profile-label">Dirección:</span>
-                                <span th:text="${cliente.direccion}">Calle Ejemplo 123</span>
+                    <!-- Detalles de la cuenta -->
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-xl font-bold mb-4 pb-2 border-b">Detalles de la Cuenta</h2>
+                        
+                        <div class="space-y-3">
+                            <div class="flex">
+                                <span class="font-medium w-32">Estado:</span>
+                                <span th:text="${cliente.activo != null && cliente.activo ? 'Activa' : 'Inactiva'}" 
+                                       th:class="${cliente.activo != null && cliente.activo ? 'text-green-600 font-medium' : 'text-red-600 font-medium'}">Activa</span>
                             </div>
-                            <div class="profile-item">
-                                <span class="profile-label">Ciudad:</span>
-                                <span th:text="${cliente.ciudad}">Ciudad</span>
+                            <div class="flex">
+                                <span class="font-medium w-32">Último acceso:</span>
+                                <span th:text="${#temporals.format(cliente.ultimoAcceso, 'dd/MM/yyyy HH:mm')}">01/01/2022 12:00</span>
                             </div>
-                            <div class="profile-item">
-                                <span class="profile-label">Departamento:</span>
-                                <span th:text="${cliente.departamento}">Departamento</span>
-                            </div>
-                            <div class="profile-item">
-                                <span class="profile-label">Código Postal:</span>
-                                <span th:text="${cliente.codigoPostal}">12345</span>
-                            </div>
-                        </div>
-                        <div th:unless="${cliente.direccion != null && !cliente.direccion.isEmpty()}">
-                            <p>No has agregado una dirección de envío todavía.</p>
                         </div>
                     </div>
                 </div>

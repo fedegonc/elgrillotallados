@@ -32,6 +32,14 @@ public class ProductoController {
     }
     
     /**
+     * Ruta alternativa para mostrar todos los productos
+     */
+    @GetMapping("/lista")
+    public String listarProductosAlternativo(Model model) {
+        return listarProductos(model);
+    }
+    
+    /**
      * Muestra los detalles de un producto específico
      */
     @GetMapping("/{id}")
