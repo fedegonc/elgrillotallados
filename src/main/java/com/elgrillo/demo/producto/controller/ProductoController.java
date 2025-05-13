@@ -1,6 +1,7 @@
 package com.elgrillo.demo.producto.controller;
 
 import com.elgrillo.demo.producto.model.Producto;
+import com.elgrillo.demo.producto.repository.ProductoRepository;
 import com.elgrillo.demo.producto.service.ProductoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  * Controlador para gestionar las vistas relacionadas con productos/tallados.
